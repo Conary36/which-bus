@@ -140,10 +140,16 @@ viewPredictions currentTime apiData selection =
             [ El.text "---" ]
 
          else
-            predictions
-                |> List.map (predictionTimeString currentTime)
-                |> List.map El.text
+            List.map (viewPrediction currentTime) predictions
         )
+
+
+viewPrediction : Time.Posix -> ShownPrediction -> Element msg
+viewPrediction currentTime shownPrediction =
+    El.row []
+        [ El.text (predictionTimeString currentTime shownPrediction)
+        , El.text (shownPrediction.tripHeadsign |> Maybe.withDefault "missing headsign")
+        ]
 
 
 predictionTimeString : Time.Posix -> ShownPrediction -> String
@@ -192,7 +198,7 @@ addSelectionForm model =
             { onChange = TypeStopId
             , text = model.stopIdFormText
             , placeholder = Nothing
-            , label = label "Stop Id"
+            , label = label "Hello"
             }
         , Input.radioRow []
             { onChange = TypeDirection
